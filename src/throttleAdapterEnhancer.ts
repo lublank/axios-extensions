@@ -78,6 +78,12 @@ export default function throttleAdapterEnhancer(adapter: AxiosAdapter, options: 
 			}
 
 			return recordCacheWithRequest(index, config);
+		} else if (method === 'post') {
+			// add throttle for post method
+			if (now - cachedRecord.timestamp > threshold) {
+				return recordCacheWithRequest(index, config);
+			}
+
 		}
 
 		return adapter(config);
