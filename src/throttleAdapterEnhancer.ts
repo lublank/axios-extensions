@@ -60,7 +60,7 @@ export default function throttleAdapterEnhancer(adapter: AxiosAdapter, options: 
 		const now = Date.now();
 		const cachedRecord = cache.get(index) || { timestamp: now };
 
-		if (method === 'get') {
+		if (method === 'get' || method === 'post') {
 
 			if (now - cachedRecord.timestamp <= threshold) {
 
@@ -78,12 +78,6 @@ export default function throttleAdapterEnhancer(adapter: AxiosAdapter, options: 
 			}
 
 			return recordCacheWithRequest(index, config);
-		} else if (method === 'post') {
-			// add throttle for post method
-			if (now - cachedRecord.timestamp > threshold) {
-				return recordCacheWithRequest(index, config);
-			}
-
 		}
 
 		return adapter(config);
